@@ -44,7 +44,7 @@ def DownloadFile(Url, Path):
 def main():
 	
 	#====================
-	#Настройка / Settings
+	#Настройки / Settings
 	#--------------------
 	
 	
