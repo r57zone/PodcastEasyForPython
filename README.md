@@ -6,7 +6,7 @@
 Время от времени (раз в 2-4 месяца), желательно очищать базу ссылок, чтобы поиск новых подкастов не замедлялся. Для этого нужно запустить скрипт "ClearOldLinks.py".
 ## Обратная связь
 `r57zone[собака]gmail.com`
-# Podcast Easy (Ru)
+# Podcast Easy (En)
 Application for downloading podcasts. Versions are available for Python 2.7, Python 3 and for [Windows](https://github.com/r57zone/Podcast-Easy-for-Windows).
 <br><br>
 Add RSS feeds to a file "RSS.txt" and run the program. After successful completion of the program change the value "DownloadFiles" in PodcastEasy.py file from False to True (47 line in the 2.7 folder and 41 line in the 3 folder). Change is necessary for the first time to not download all the podcasts from the RSS feeds.
