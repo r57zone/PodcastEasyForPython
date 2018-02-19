@@ -1,55 +1,64 @@
-#Podcast Easy 0.4 clear old links (27.08.2016) by r57zone
-#http://r57zone.github.io
-#Python 2.7
+п»ї#Podcast Easy 0.7 Removing outdated links (19.02.2018) by r57zone
+#Pttp://r57zone.github.io
+#Python 2.7.14
 
-import urllib2, os
+import urllib2, os, platform
 
-def GetUrl(url):
+def HTTPGet(Url):
 	try:
-		responce=urllib2.urlopen(url)
-		html=responce.read()
+		Responce = urllib2.urlopen(Url)
+		Source = Responce.read()
 	except:
-		html='-1'
-	return html
+		Source = ''
+	return Source
 
 def main():
 	
-	print ('')
-	print (' Podcast Easy 0.4 clear old links')
-	print ('')
-
-	rss=open(os.getcwd()+'\\rss.txt', 'r') #if Linux os replace in path "\\" to "/"
-	downloaded=open(os.getcwd()+'\\downloaded.txt', 'r').readlines() #if Linux os replace in path "\\" to "/"
-	DownloadedUpdate=open(os.getcwd()+'\\downloaded.txt','w')
-
-	source=''
-	LinkCount=0
+	print ('Podcast Easy - Removing outdated links')
 	
-	#Создание общего списка / Creating a common list
-	print(' Этап 1 - Подготовка общего списка')
-	for i, address in enumerate(rss):
+	#РЎРёСЃС‚РµРјРЅС‹Р№ СЃР»СЌС€ / System slash 
+	if platform.system() == 'Windows':
+		SysSlash = '\\'
+	else:
+		SysSlash = '/'
+
+	RSSList = open(os.getcwd() + SysSlash + 'RSS.txt', 'r').readlines()
+	Downloaded = open(os.getcwd() + SysSlash + 'Downloaded.txt', 'r').readlines()
+	DownloadedFile = open(os.getcwd() + SysSlash + 'Downloaded.txt', 'w')
+
+	#Р’СЃРµ Р»РµРЅС‚С‹ / Source of all feeds
+	Source = ''
+	#РљРѕР»РёС‡РµСЃС‚РІРѕ СѓРґР°Р»РµРЅРЅС‹С… СЃСЃС‹Р»РѕРє / Removed link count
+	LinksCount = 0
+	#РћС€РёР±РєР°
+	GetFeedError = False
 	
-		#Лента / Rss
-		GetRss=GetUrl(address)
-		if GetRss=='-1':
+	#РЎРѕР·РґР°РЅРёРµ РѕР±С‰РµРіРѕ СЃРїРёСЃРєР° / Creating a common list
+	print('Preparing the common list')
+	for i, Address in enumerate(RSSList):
+	
+		FeedSource = HTTPGet(Address)
+		if FeedSource == '':
+			print('Error, feed "{}" not available.\nIf it ceased to exist, then simply remove it and try again.'.format(Address))
+			GetFeedError = True
 			break
-			print('Ошибка, лента "'+address+'" недоступна. Если она перестала существовать, то просто удалите ее из файла "rss.txt" и повторите попытку.')
-
-		source+=GetRss
-	print(' Этап 2 - Проверка ссылок в списке')
+			
+		Source += FeedSource
+		
+	if not GetFeedError:	
+		print('Checking links in list')
 	
-	for line in downloaded:
-		if source.find(line.replace("\n",''))==-1:
-			LinkCount+=1
+	#РџСЂРѕРІРµСЂРєР° СЃСЃС‹Р»РѕРє / Checking links
+	for Line in Downloaded:
+		if Source.find(Line.replace('\n', '')) == -1:
+			LinksCount += 1
 		else:
-			DownloadedUpdate.write(line.replace("\n",'')+"\n")
+			DownloadedFile.write(Line.replace('\n', '') + '\n') # РџРµСЂРµРЅРѕСЃ СЃС‚СЂРѕРєРё РІСЃРµРіРґР°
 	
-	print(' Удалено ссылок : '+str(LinkCount))
+	if not GetFeedError:	
+		print('Removed outdated links: {}'.format(LinksCount))
  
-	DownloadedUpdate.close()
-	rss.close()
-	#EN=Press ENTER to execute the command
-	wait=raw_input('\n Нажмите Enter, чтобы выйти....')
+	DownloadedFile.close()
 
 if __name__=='__main__':
 	main()
