@@ -57,8 +57,8 @@ def main():
 	#Загружать подкасты / Download podcasts
 	#After adding a new feed is recommended to skip downloading all new podcasts.
 	
-	DownloadPodcasts = True
-	#DownloadPodcasts = False
+	DownloadPodcasts = False
+	#DownloadPodcasts = True
 	
 	#--------------------
 	#Расширения подкастов / Podcasts extensions
